@@ -1,7 +1,9 @@
 
 let sound: any;
-let debugMode: boolean = true;
+let debugMode: boolean = false;
 let songDuration: number;
+let fft: any;
+let amp: any;
 
 function preload() {
     sound = loadSound('../assets/music/the_uncanny_valley/06_Disco_Inferno.mp3');
@@ -33,26 +35,17 @@ function draw() {
     background(0);
     noStroke();
     fill(255, 255, 255, 30);
-
-    rect(50+(-width/2), height*0.85+(-height/2), width-100, 10);
-    let pointer: number = sound.currentTime();
-    map(pointer, 0, songDuration, 50, (width-50));
-    fill(220, 10, 15);
-    rect(pointer,height*0.85+(-height/2), 5, 20);
+    if(debugMode) {
+        rect(50+(-width/2), height*0.85+(-height/2), width-100, 10);
+        let pointer: number = sound.currentTime();
+        map(pointer, 0, songDuration, 50, (width-50));
+        fill(220, 10, 15);
+        rect(pointer,height*0.85+(-height/2), 5, 20);
+    }
     var spect = fft.analyze();
-
-
-
-    normalMaterial();
 
     push();
     pent.draw();
-    var lvl = amp.getLevel();
-    var x = map(lvl, 0, 1, 0, 100);
-    rotateZ(frameCount * 0.001);
-    rotateX(frameCount * 0.02 + x*0.1);
-    rotateY(frameCount * 0.009);
-    box(x+ abs((10* sin(frameCount *0.02))),x+ abs((10 * cos(frameCount *0.01))));
     pop();
 }
 
