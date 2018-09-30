@@ -64,7 +64,6 @@ class Pentagram {
     draw(rr: number, rg: number, rb: number, sa: number) {
 
         // A -> B
-        stroke(255);
         strokeWeight(10);
         line(this.xPoints[0], this.yPoints[0], this.xPoints[1], this.yPoints[1]);
         // B -> D

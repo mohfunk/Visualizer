@@ -1,12 +1,16 @@
 
-let sound: any;
+let sound: any[];
 let debugMode: boolean = false;
 let songDuration: number;
 let fft: any;
 let amp: any;
-
+let currsong: any;
+let sample: number;
+let sampleSlider: any;
 function preload() {
-    sound = loadSound('../assets/music/new_model/Tactical_Precision_Disarray.wav');
+    sLib = new SoundLib(2, '../assets/music');
+    currsong = loadSound('../assets/music/the_uncanny_valley/06_Disco_Inferno.mp3');
+    sLib.songs[0] = currsong;
 }
 
 function windowResized() {
@@ -23,12 +27,18 @@ function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     background(0);
     pent = new Pentagram(3, 100, height, width);
+    sampleSlider = createSlider(2, 1024, 16, 64);
+    sampleSlider.position(10,10);
+    sampleSlider.style("1000px", "80px");
     pent.shift(-width/2, -height/2);
     pent.scale(10);
+    sLib = new SoundLib(2, '../assets/music');
+    sLib.load('the_uncanny_valley', '06_Disco_Inferno.mp3');
+    sLib.load('the_uncanny_valley', '03_Death_Squad.mp3');
     fft = new p5.FFT();
     amp = new p5.Amplitude();
-    songDuration = sound.duration();
-    sound.play();
+    // songDuration = sound.duration();
+    currsong.play();
 }
 
 function draw() {
@@ -43,65 +53,19 @@ function draw() {
         rect(pointer,height*0.85+(-height/2), 5, 20);
     }
     var spect = fft.analyze();
-    var ocbands = fft.getOctaveBands(16, 32);
+    var ocbands = fft.getOctaveBands(sampleSlider.value(), 16);
     var logavg = fft.logAverages(ocbands);
     console.log(logavg);
     var rran = random(0.8, 1);
     var gran = random(0.1, 0.2);
-    var bran = random(0.2, 0.6);
-    for(let i: number = 0; i < 152; ++i) {
+    var bran = random(0.1, 0.9);
+    for(let i: number = 0; i < logavg.length; ++i) {
+        push();
         fill(logavg[i]*(logavg[i]*0.005)*rran, logavg[i]*gran, logavg[i]*bran, 90);
-        rect(i*10 - (width/2), height * 0.5, 10, -logavg[i]*(logavg[i]*0.5)*0.51);
+        rect(i*20 - (width/2), height * 0.5, 20, -logavg[i]*(logavg[i]*0.05)*0.51);
+        stroke(logavg[i]*(logavg[i]*0.005)*rran, logavg[i]*gran, logavg[i]*bran, 40);
+        pent.draw();
+        pop();
     }
-    push();
-    pent.draw();
-    pop();
 }
 
-function keyPressed() {
-    console.log("key pressed");
-    console.log(keyCode);
-    var soundPosn = sound.currentTime();
-    console.log("current time = " + soundPosn);
-
-    // Pause toggle wiht p 
-    if(keyCode == 80) {
-        if(sound.isPlaying()) {
-            sound.pause();
-
-        } else {
-            sound.play();
-        }
-
-    }
-
-    if(keyCode === LEFT_ARROW) {
-        console.log("jumping backwards")
-        sound.jump(soundPosn - 5);
-    }
-
-    if(keyCode === RIGHT_ARROW) {
-        console.log("jumping Forward")
-        sound.jump(soundPosn + 10);     
-    }
-    // d
-    if(keyCode == 68) {
-        if(debugMode) {
-            debugMode = false;
-        } else {
-            debugMode = true;
-        }
-    }
-    /*
-    // +
-    if(keyCode == 187) {
-        console.log("volume +");
-        setVolume(getMasterVolume() + 0.05);
-    }
-    // -
-    if(keyCode == 189) {
-        console.log("volume -");
-        setVolume((getMasterVolume() - 0.05), 0.1, 0.1);       
-    }
-     */
-}
