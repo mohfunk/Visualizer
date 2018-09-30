@@ -6,7 +6,7 @@ let fft: any;
 let amp: any;
 
 function preload() {
-    sound = loadSound('../assets/music/the_uncanny_valley/06_Disco_Inferno.mp3');
+    sound = loadSound('../assets/music/new_model/Vantablack.wav');
 }
 
 function windowResized() {
