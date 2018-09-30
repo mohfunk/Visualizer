@@ -61,12 +61,11 @@ class Pentagram {
     }
 
 
-    draw() {
-        var lvls = amp.getLevel();
-        var xs = map(lvls, 0, 1, 0, 255);
+    draw(rr: number, rg: number, rb: number, sa: number) {
 
         // A -> B
-        stroke(random(1, xs),random(1, xs), random(1, xs));
+        stroke(255);
+        strokeWeight(10);
         line(this.xPoints[0], this.yPoints[0], this.xPoints[1], this.yPoints[1]);
         // B -> D
         line(this.xPoints[1], this.yPoints[1], this.xPoints[4], this.yPoints[4]);

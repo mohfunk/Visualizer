@@ -6,7 +6,7 @@ let fft: any;
 let amp: any;
 
 function preload() {
-    sound = loadSound('../assets/music/new_model/Vantablack.wav');
+    sound = loadSound('../assets/music/new_model/Tactical_Precision_Disarray.wav');
 }
 
 function windowResized() {
@@ -43,13 +43,19 @@ function draw() {
         rect(pointer,height*0.85+(-height/2), 5, 20);
     }
     var spect = fft.analyze();
-
+    var ocbands = fft.getOctaveBands(16, 32);
+    var logavg = fft.logAverages(ocbands);
+    console.log(logavg);
+    var rran = random(0.8, 1);
+    var gran = random(0.1, 0.2);
+    var bran = random(0.2, 0.6);
+    for(let i: number = 0; i < 152; ++i) {
+        fill(logavg[i]*(logavg[i]*0.005)*rran, logavg[i]*gran, logavg[i]*bran, 90);
+        rect(i*10 - (width/2), height * 0.5, 10, -logavg[i]*(logavg[i]*0.5)*0.51);
+    }
     push();
     pent.draw();
     pop();
-}
-
-
 }
 
 function keyPressed() {
@@ -77,6 +83,14 @@ function keyPressed() {
     if(keyCode === RIGHT_ARROW) {
         console.log("jumping Forward")
         sound.jump(soundPosn + 10);     
+    }
+    // d
+    if(keyCode == 68) {
+        if(debugMode) {
+            debugMode = false;
+        } else {
+            debugMode = true;
+        }
     }
     /*
     // +
