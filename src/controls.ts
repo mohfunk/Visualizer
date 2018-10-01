@@ -29,8 +29,10 @@ function keyPressed() {
     if(keyCode == 68) {
         if(debugMode) {
             debugMode = false;
+            sampleSlider.hide();
         } else {
             debugMode = true;
+            sampleSlider.show();
         }
     }
     /*

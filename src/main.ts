@@ -1,5 +1,4 @@
-
-let sound: any[];
+let sound: any;
 let debugMode: boolean = false;
 let songDuration: number;
 let fft: any;
@@ -7,10 +6,10 @@ let amp: any;
 let currsong: any;
 let sample: number;
 let sampleSlider: any;
+let sLib: object;
 function preload() {
-    sLib = new SoundLib(2, '../assets/music');
-    currsong = loadSound('../assets/music/the_uncanny_valley/06_Disco_Inferno.mp3');
-    sLib.songs[0] = currsong;
+    sLib = loadJSON("../assets/json/songs.json");
+    sound = loadSound("../assets/music/new_model/God_Complex.wav");
 }
 
 function windowResized() {
@@ -27,18 +26,15 @@ function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     background(0);
     pent = new Pentagram(3, 100, height, width);
-    sampleSlider = createSlider(2, 1024, 16, 64);
+    sampleSlider = createSlider(2, 1024, 2, 64);
     sampleSlider.position(10,10);
-    sampleSlider.style("1000px", "80px");
+    sampleSlider.style("width", "500px");
     pent.shift(-width/2, -height/2);
     pent.scale(10);
-    sLib = new SoundLib(2, '../assets/music');
-    sLib.load('the_uncanny_valley', '06_Disco_Inferno.mp3');
-    sLib.load('the_uncanny_valley', '03_Death_Squad.mp3');
     fft = new p5.FFT();
     amp = new p5.Amplitude();
     // songDuration = sound.duration();
-    currsong.play();
+    sound.play();
 }
 
 function draw() {
@@ -60,12 +56,15 @@ function draw() {
     var gran = random(0.1, 0.2);
     var bran = random(0.1, 0.9);
     for(let i: number = 0; i < logavg.length; ++i) {
-        push();
-        fill(logavg[i]*(logavg[i]*0.005)*rran, logavg[i]*gran, logavg[i]*bran, 90);
-        rect(i*20 - (width/2), height * 0.5, 20, -logavg[i]*(logavg[i]*0.05)*0.51);
-        stroke(logavg[i]*(logavg[i]*0.005)*rran, logavg[i]*gran, logavg[i]*bran, 40);
-        pent.draw();
-        pop();
+        var alpha: number;
+        noStroke();
+        fill(logavg[i]*(logavg[i]*0.005)*rran, logavg[i]*gran, logavg[i]*0.005*bran, logavg[i]);
+        rect(i*1 - (width/2), height * 0.5, 5*logavg[i]*0.2, -logavg[i]*(logavg[i]*0.05)*0.51);
+        fill(logavg[i]*(logavg[i]*0.005)*rran, logavg[i]*gran, logavg[i]*bran, logavg[i]);
+        rect(i*(-1) + (width/2) - 200, height * 0.5, 5*logavg[i]*0.2, -logavg[i]*(logavg[i]*0.05)*0.51);
     }
+
+        stroke(logavg[55]*(logavg[35]*0.005)*rran, logavg[87]*gran, logavg[23]*bran, 40);
+        pent.draw();
 }
 
