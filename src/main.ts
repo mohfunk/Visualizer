@@ -9,7 +9,7 @@ let sampleSlider: any;
 let sLib: object;
 function preload() {
     sLib = loadJSON("../assets/json/songs.json");
-    sound = loadSound("../assets/music/new_model/God_Complex.wav");
+    sound = loadSound("../assets/music/the_uncanny_valley/10_Assault.mp3");
 }
 
 function windowResized() {
@@ -35,6 +35,7 @@ function setup() {
     amp = new p5.Amplitude();
     // songDuration = sound.duration();
     sound.play();
+    frameRate(24);
 }
 
 function draw() {
@@ -49,7 +50,7 @@ function draw() {
         rect(pointer,height*0.85+(-height/2), 5, 20);
     }
     var spect = fft.analyze();
-    var ocbands = fft.getOctaveBands(sampleSlider.value(), 16);
+    var ocbands = fft.getOctaveBands(16, 16);
     var logavg = fft.logAverages(ocbands);
     console.log(logavg);
     var rran = random(0.8, 1);
@@ -59,9 +60,7 @@ function draw() {
         var alpha: number;
         noStroke();
         fill(logavg[i]*(logavg[i]*0.005)*rran, logavg[i]*gran, logavg[i]*0.005*bran, logavg[i]);
-        rect(i*1 - (width/2), height * 0.5, 5*logavg[i]*0.2, -logavg[i]*(logavg[i]*0.05)*0.51);
-        fill(logavg[i]*(logavg[i]*0.005)*rran, logavg[i]*gran, logavg[i]*bran, logavg[i]);
-        rect(i*(-1) + (width/2) - 200, height * 0.5, 5*logavg[i]*0.2, -logavg[i]*(logavg[i]*0.05)*0.51);
+        rect(i*10 - (width/2), height * 0.5, 7*logavg[i]*0.02, -logavg[i]*(logavg[i]*0.05)*0.51);
     }
 
         stroke(logavg[55]*(logavg[35]*0.005)*rran, logavg[87]*gran, logavg[23]*bran, 40);
