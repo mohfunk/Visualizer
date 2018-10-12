@@ -8,8 +8,7 @@ let sample: number;
 let sampleSlider: any;
 let sLib: object;
 function preload() {
-    sLib = loadJSON("../assets/json/songs.json");
-    sound = loadSound("../assets/music/the_uncanny_valley/10_Assault.mp3");
+    sound = loadSound("../assets/sound/am/I_Am_The_Night.wav");
 }
 
 function windowResized() {
@@ -52,7 +51,7 @@ function draw() {
     var spect = fft.analyze();
     var ocbands = fft.getOctaveBands(16, 16);
     var logavg = fft.logAverages(ocbands);
-    console.log(logavg);
+    // console.log(logavg);
     var rran = random(0.8, 1);
     var gran = random(0.1, 0.2);
     var bran = random(0.1, 0.9);
@@ -66,4 +65,3 @@ function draw() {
         stroke(logavg[55]*(logavg[35]*0.005)*rran, logavg[87]*gran, logavg[23]*bran, 40);
         pent.draw();
 }
-
