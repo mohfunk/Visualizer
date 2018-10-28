@@ -7,6 +7,9 @@ class Pentagram {
     margin: number;
     xPoints: number[] = [];
     yPoints: number[] = [];
+
+    n_sw: number;
+
     setup(p: p5, por: number, mar: number, hei: number, wid: number) {
         this.portion = por; 
         this.margin = mar;
@@ -55,11 +58,12 @@ class Pentagram {
 
     }
 
-
+    tweek(p: p5, gui: debugGui) {
+    }
     draw(p: p5) {
 
         // A -> B
-        p.strokeWeight(10);
+        p.strokeWeight(2);
         p.stroke(255);
         p.endShape(p.CLOSE);  
         p.line(this.xPoints[0], this.yPoints[0], this.xPoints[1], this.yPoints[1]);
