@@ -1,16 +1,20 @@
 {
-  "name": "visualizer",
-  "version": "1.0.0",
-  "main": "src/main.js",
-  "author": "Mohammed Alhazen",
-  "license": "MIT",
-  "scripts": {
-    "serve": "concurrently \"browser-sync start --server -w\" \" tsc --watch\" \"sass --watch assets/sass/main.sass build/main.css\""
-  },
-  "devDependencies": {
-    "browser-sync": "^2.24.7",
-    "concurrently": "^4.0.1",
-    "typescript": "^3.0.3"
-  },
-  "dependencies": {}
+    "name": "AudioVisualization",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Mohammed Alhazen",
+    "license": "MIT",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "serve": "concurrently \"browser-sync start --server -w\" \" tsc --watch\" \"sass --watch assets/sass/main.sass build/main.css\""
+    },
+    "devDependencies": {
+        "browser-sync": "^2.24.4",
+        "concurrently": "^3.5.1",
+        "typescript": "^2.8.3"
+    },
+    "dependencies": {
+        "@types/dat.gui": "^0.7.2",
+        "dat.gui": "^0.7.3"
+    }
 }

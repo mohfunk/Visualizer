@@ -1,6 +1,3 @@
-const phi: number = (1 + Math.sqrt(5))/2;
-const q:   number = (2*phi) + 1;
-
 class Pentagram {
     length: number;
     a: number;
@@ -8,26 +5,23 @@ class Pentagram {
     l: number;
     portion: number;
     margin: number;
-    xPoints: number[];
-    yPoints: number[];
-
-    constructor(p: number, m: number, h: number, w: number) {
-        this.portion = p;
-        this.margin = m;
-        this.l = w/this.portion;
-        this.len = this.l - (2 * this.margin);
-        this.b = this.len/q;
+    xPoints: number[] = [];
+    yPoints: number[] = [];
+    setup(p: p5, por: number, mar: number, hei: number, wid: number) {
+        this.portion = por; 
+        this.margin = mar;
+        this.l = wid/this.portion;
+        this.length = this.l - (2 * this.margin);
+        this.b = this.length/q;
         this.a = phi * this.b;
-        this.xPoints = [0,0,0,0,0];
-        this.yPoints = [0,0,0,0,0];
         // Point A
         this.xPoints[0] = this.l + this.margin;
-        this.yPoints[0] = h/(this.portion - 1);
+        this.yPoints[0] = hei/(this.portion - 1);
         // Point B
         this.xPoints[1] = (2 * this.l) - this.margin;
         this.yPoints[1] = this.yPoints[0];
         // Point H
-        this.xPoints[2] = this.xPoints[0] + (this.len/2);
+        this.xPoints[2] = this.xPoints[0] + (this.length/2);
         this.yPoints[2] = this.yPoints[0] + this.a;
         // Point C
         this.xPoints[3] = this.xPoints[2] + this.b;
@@ -35,6 +29,7 @@ class Pentagram {
         // Point D
         this.xPoints[4] = this.xPoints[2] - this.b;
         this.yPoints[4] = this.yPoints[3];
+
     }
 
     shift(xFactor: number, yFactor: number) {
@@ -61,20 +56,20 @@ class Pentagram {
     }
 
 
-    draw(rr: number, rg: number, rb: number, sa: number) {
+    draw(p: p5) {
 
         // A -> B
-        strokeWeight(10);
-        line(this.xPoints[0], this.yPoints[0], this.xPoints[1], this.yPoints[1]);
+        p.strokeWeight(10);
+        p.stroke(255);
+        p.endShape(p.CLOSE);  
+        p.line(this.xPoints[0], this.yPoints[0], this.xPoints[1], this.yPoints[1]);
         // B -> D
-        line(this.xPoints[1], this.yPoints[1], this.xPoints[4], this.yPoints[4]);
+        p.line(this.xPoints[1], this.yPoints[1], this.xPoints[4], this.yPoints[4]);
         // D -> H
-        line(this.xPoints[4], this.yPoints[4], this.xPoints[2], this.yPoints[2]);
+        p.line(this.xPoints[4], this.yPoints[4], this.xPoints[2], this.yPoints[2]);
         // H -> C
-        line(this.xPoints[2], this.yPoints[2], this.xPoints[3], this.yPoints[3]);
+        p.line(this.xPoints[2], this.yPoints[2], this.xPoints[3], this.yPoints[3]);
         // C -> A
-        line(this.xPoints[3], this.yPoints[3], this.xPoints[0], this.yPoints[0]);
+        p.line(this.xPoints[3], this.yPoints[3], this.xPoints[0], this.yPoints[0]);
     }
 }
-
-

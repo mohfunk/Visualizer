@@ -1,4 +1,3 @@
-
 // This file was auto-generated. Please do not edit it.
 
 type COLOR_MODE = any;
