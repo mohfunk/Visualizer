@@ -2,7 +2,7 @@ let sound: p5.SoundFile;
 let pents: Pentagram[] = [];
 var sketch = (p: p5) => {
 
-    const gui = new debugGui();
+    const ui = new Gui();
     for(var i = 0; i < 10; ++i) pents[i] = new Pentagram();
     p.preload = () => {
         sound =  (p as any).loadSound('../assets/music/the_uncanny_valley/12_Souls_At_Zero_(Feat._Astronoid).mp3');
@@ -10,10 +10,12 @@ var sketch = (p: p5) => {
     
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);
-        gui.setup(p);
+        ui.setup(p);
         pents[0].setup(p, 3, 100, p.height, p.width);
-        pents[0].tweek(p, gui);
+        pents[0].tweek(p, ui);
         sound.play();
+        ui.addS(p, 3, 30, 5, "test");
+        ui.addS(p, 3, 30, 5, "t2");
     }
     
     p.windowResized = () => {
@@ -29,7 +31,7 @@ var sketch = (p: p5) => {
     p.keyPressed = () => {
         let kc: number = p.keyCode;
         if(bug) console.log('key press: '+ kc)
-        if(kc === 68) gui.tog(p);
+        if(kc === 68) ui.tog(p);
         if(kc === 82) {
             sound.stop();
             sound.play();

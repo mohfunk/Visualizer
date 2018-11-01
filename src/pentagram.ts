@@ -7,9 +7,9 @@ class Pentagram {
     margin: number;
     xPoints: number[] = [];
     yPoints: number[] = [];
-
     n_sw: number;
-
+    
+    
     setup(p: p5, por: number, mar: number, hei: number, wid: number) {
         this.portion = por; 
         this.margin = mar;
