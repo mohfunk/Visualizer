@@ -1,8 +1,5 @@
 node_modules/
-build/
-lib/
 .DS_Store
-**/*.js
 **/*.js.map
 **/**/*.mp3
 **/**/*.wav

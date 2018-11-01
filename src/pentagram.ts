@@ -1,22 +1,24 @@
 class Pentagram {
-    length: number;
-    a: number;
-    b: number;
-    l: number;
+    length : number;
+    a      : number;
+    b      : number;
+    l      : number;
     portion: number;
-    margin: number;
+    margin : number;
     xPoints: number[] = [];
     yPoints: number[] = [];
-    div: number;
-    sw: tweakable;
-    sr: tweakable;
-    sg: tweakable;
-    sb: tweakable;
-    
-     
-    setup(p: p5, ui: Gui, por: number, mar: number, hei: number, wid: number) {
-        this.portion = por; 
-        this.margin = mar;
+    div    : number;
+    p      : p5
+    ui     : Gui
+    sw     : tweakable;
+    sr     : tweakable;
+    sg     : tweakable;
+    sb     : tweakable;
+
+    dim() {
+        let wid = this.p.width;
+        let hei = this.p.height;
+
         this.l = wid/this.portion;
         this.length = this.l - (2 * this.margin);
         this.b = this.length/q;
@@ -36,13 +38,19 @@ class Pentagram {
         // Point D
         this.xPoints[4] = this.xPoints[2] - this.b;
         this.yPoints[4] = this.yPoints[3];
-
+    }
+    setup(p: p5, ui: Gui, por: number, mar: number) {
+        this.p = p;
+        this.ui = ui;
+        this.portion = por; 
+        this.margin = mar;
         this.sw = new tweakable(ui, 1, 10, 2, 'stroke width');
         this.sr = new tweakable(ui, 0, 255, 255, 'R');
         this.sg = new tweakable(ui, 0, 255, 255, 'G');
         this.sb = new tweakable(ui, 0, 255, 255, 'B');
-
+        this.dim();
     }
+
 
     shift(xFactor: number, yFactor: number) {
         for(let i: number = 0; i < 5; ++i) {
