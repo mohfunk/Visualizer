@@ -24,6 +24,7 @@ class Gui {
     private cdiv: p5.Element[] = [];
     private cont: any = [];
     private visi: boolean;
+    p: p5;
     setup(p: p5) {
         this.canv = p.createDiv() as p5.Element;
         this.canv.hide();
@@ -32,6 +33,7 @@ class Gui {
         this.cdiv[0] = p.createDiv() as p5.Element;
         this.cdiv[0].class('cdiv');
         this.cdiv[0].parent(this.canv);
+        this.p = p;
     }
     tog(p: p5) {
         if(this.visi == false) {
@@ -43,16 +45,37 @@ class Gui {
         }
     }
 
-    addS(p: p5, min: number, max: number, def: number, label: string) : number {
-        let n: number = this.cont.push( new sliderGui(p, min, max, def, label, this.cdiv[0]));
+    addS(min: number, max: number, def: number, label: string) : number {
+        let n: number = this.cont.push( new sliderGui(this.p, min, max, def, label, this.cdiv[0]));
         return n-1;
     }
 
-    val(p: p5, n: number) {
+    val(n: number) {
         return this.cont[n].val();
     }
     draw(p: p5) {
     
     }
 
+}
+
+class tweakable {
+    min: number
+    max: number
+    def: number
+    ind: number
+    val: number
+    i  : number
+    uirf: Gui
+    constructor(ui: Gui, min: number, max: number, def: number, label: string) {
+        this.min = min;
+        this.max = max;
+        this.def = def;
+        this.val = def;
+        this.uirf = ui;
+        this.i = ui.addS(min, max, def, label);
+    }
+    v(): number {
+        return this.uirf.val(this.i);
+    }
 }

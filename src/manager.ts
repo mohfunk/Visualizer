@@ -5,6 +5,3 @@ const q:   number = (2*phi) + 1;
 // Debug
 
 let bug: boolean = true;
-class manager {
-    
-}

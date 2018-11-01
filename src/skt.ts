@@ -1,7 +1,6 @@
 let sound: p5.SoundFile;
 let pents: Pentagram[] = [];
 var sketch = (p: p5) => {
-
     const ui = new Gui();
     for(var i = 0; i < 10; ++i) pents[i] = new Pentagram();
     p.preload = () => {
@@ -11,11 +10,8 @@ var sketch = (p: p5) => {
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);
         ui.setup(p);
-        pents[0].setup(p, 3, 100, p.height, p.width);
-        pents[0].tweek(p, ui);
+        pents[0].setup(p, ui, 3, 100, p.height, p.width);
         sound.play();
-        ui.addS(p, 3, 30, 5, "test");
-        ui.addS(p, 3, 30, 5, "t2");
     }
     
     p.windowResized = () => {

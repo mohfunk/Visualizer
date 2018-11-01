@@ -7,10 +7,14 @@ class Pentagram {
     margin: number;
     xPoints: number[] = [];
     yPoints: number[] = [];
-    n_sw: number;
+    div: number;
+    sw: tweakable;
+    sr: tweakable;
+    sg: tweakable;
+    sb: tweakable;
     
-    
-    setup(p: p5, por: number, mar: number, hei: number, wid: number) {
+     
+    setup(p: p5, ui: Gui, por: number, mar: number, hei: number, wid: number) {
         this.portion = por; 
         this.margin = mar;
         this.l = wid/this.portion;
@@ -32,6 +36,11 @@ class Pentagram {
         // Point D
         this.xPoints[4] = this.xPoints[2] - this.b;
         this.yPoints[4] = this.yPoints[3];
+
+        this.sw = new tweakable(ui, 1, 10, 2, 'stroke width');
+        this.sr = new tweakable(ui, 0, 255, 255, 'R');
+        this.sg = new tweakable(ui, 0, 255, 255, 'G');
+        this.sb = new tweakable(ui, 0, 255, 255, 'B');
 
     }
 
@@ -58,13 +67,11 @@ class Pentagram {
 
     }
 
-    tweek(p: p5, gui: debugGui) {
-    }
     draw(p: p5) {
 
         // A -> B
-        p.strokeWeight(2);
-        p.stroke(255);
+        p.strokeWeight(this.sw.v());
+        p.stroke(this.sr.v(), this.sg.v(), this.sb.v());
         p.endShape(p.CLOSE);  
         p.line(this.xPoints[0], this.yPoints[0], this.xPoints[1], this.yPoints[1]);
         // B -> D
