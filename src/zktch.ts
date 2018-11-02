@@ -12,7 +12,7 @@ var sketch = (p: p5) => {
 
     for(var i = 0; i < 10; ++i) pents[i] = new Pentagram();
     p.preload = () => {
-        pb.load();
+        pb.preload();
     }
 
     p.setup = () => {
@@ -21,7 +21,7 @@ var sketch = (p: p5) => {
         vi.setup(p);
         pents[0].setup(p, ui, 3, 100);
         pb.play();
-        p.frameRate(60);
+        p.frameRate(100);
     }
 
     p.windowResized = () => {
