@@ -21,7 +21,7 @@ var sketch = (p: p5) => {
         vi.setup(p);
         pents[0].setup(p, ui, 3, 100);
         pb.play();
-        p.frameRate(100);
+        p.frameRate(144);
     }
 
     p.windowResized = () => {

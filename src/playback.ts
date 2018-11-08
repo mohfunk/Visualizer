@@ -7,7 +7,7 @@ class Playback {
 
     constructor(p: p5) {
         this.p = p;
-        this.urls[0] = '../assets/music/cofl.mp3';
+        this.urls[0] = '../assets/music/NM/Birth_of_the_New_Model.wav';
     }
     preload() {
         this.songs[0] =  (this.p as any).loadSound(this.urls[0]);

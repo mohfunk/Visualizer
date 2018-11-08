@@ -153,7 +153,7 @@ var Playback = (function () {
         this.songs = [];
         this.urls = [];
         this.p = p;
-        this.urls[0] = '../assets/music/cofl.mp3';
+        this.urls[0] = '../assets/music/NM/Birth_of_the_New_Model.wav';
     }
     Playback.prototype.preload = function () {
         this.songs[0] = this.p.loadSound(this.urls[0]);
@@ -267,7 +267,7 @@ var sketch = function (p) {
         vi.setup(p);
         pents[0].setup(p, ui, 3, 100);
         pb.play();
-        p.frameRate(100);
+        p.frameRate(144);
     };
     p.windowResized = function () {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
