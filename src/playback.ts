@@ -1,21 +1,40 @@
 class Playback {
-    p      : p5;
-    playing: p5.SoundFile;
-    pi: number
-    songs: p5.SoundFile[] = [];
-    urls: string[] = [];
+    p       : p5;
+    playing : p5.SoundFile;
+    duration: number;
+    pi      : number;
+    songs   : p5.SoundFile[] = [];
+    urls    : string[] = [];
+    visi    : boolean; 
+    ui_index: number;
+    ui      : Gui;
+    volume  : tweakable;
+    timeLine: p5.Element;
 
-    constructor(p: p5) {
+    constructor(p: p5, ui: Gui) {
         this.p = p;
-        this.urls[0] = '../assets/music/NM/Birth_of_the_New_Model.wav';
+        this.ui = ui;
+        this.urls[0] = '../assets/music/UNCANNY_VALLEY_BOUNES/Hard_Wired_Instrumental.wav';
+        this.urls[1] = '../assets/music/UNCANNY_VALLEY/Disco_Inferno.wav';
+        this.urls[2] = '../assets/music/CYGNUS/Cygnus.wav';
+        this.urls[3] = '../assets/music/DANGOURS_DAYS/Future_Club.wav';
+        this.visi = false;
+    }
+    setup() {
+    
     }
     preload() {
         this.songs[0] =  (this.p as any).loadSound(this.urls[0]);
+        this.songs[1] =  (this.p as any).loadSound(this.urls[1]);
+        this.songs[2] =  (this.p as any).loadSound(this.urls[2]);
+        this.songs[3] =  (this.p as any).loadSound(this.urls[3]);
         this.playing  = this.songs[0];
+        this.duration = this.playing.duration();
         this.pi = 0;
     }
     play() {
         this.playing.play();
+        if(!this.volume) this.volume = new tweakable(this.ui, 0.0, 1.0, 1.0, 'Volumn');
     }
     pause() {
         if(this.playing.isPlaying())
@@ -43,25 +62,38 @@ class Playback {
         if( vol != 1 ) this.p.masterVolume(1); 
     }
     next() {
-        this.playing.stop();
-        this.playing = this.songs[this.pi + 1];
-        this.pi++;
-        this.play();
+        this.changeSong(1);
     }
     prev() {
+        this.changeSong(-1);
+    }
+    changeSong(d: number) {
         this.playing.stop();
-        this.playing = this.songs[this.pi - 1];
-        this.pi--;
+        this.playing = this.songs[this.pi + d];
+        this.duration = this.playing.duration();
+        this.pi = this.pi + d;
         this.play();
     }
-    vu(){
-        let vol: number = this.p.getMasterVolume();
-        this.p.masterVolume(vol + 0.05); 
-
+    mov() {
+        
+    } 
+    tog() {
+        if(this.visi) this.visi = false;
+        else this.visi = true;
     }
-    vd() {
-        let vol: number = this.p.getMasterVolume();
-        this.p.masterVolume(vol - 0.05); 
+    drawGui() {
+        this.p.masterVolume(this.volume.v());
+        if(this.visi) {
+        let y: number = this.p.height - this.p.height/10;
+        let xm: number = 100;
+        this.p.fill(50, 50, 50, 100);
+        this.p.rect(xm, y, this.p.width - xm*2, 10);
+        this.p.fill(200, 20, 20);
+        console.log(this.duration);
+        let xc: number = this.p.map(this.playing.currentTime(), 0, this.playing.duration(), xm, this.p.width - xm*2);
+        console.log(xc);
+        this.p.rect(xc, y-5, 5, 20);
+        }
     }
 
 }

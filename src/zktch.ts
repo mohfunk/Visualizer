@@ -7,7 +7,7 @@ let cn: Controller;
 var sketch = (p: p5) => {
     ui = new Gui();
     vi = new Vui();
-    pb = new Playback(p);
+    pb = new Playback(p, ui);
     cn = new Controller(p, ui, pb);
 
     for(var i = 0; i < 10; ++i) pents[i] = new Pentagram();
@@ -39,6 +39,7 @@ var sketch = (p: p5) => {
         p.resetMatrix();
         vi.draw(p);
         p.resetMatrix();
+        pb.drawGui();
 
     }
     p.keyPressed = () => {

@@ -1,3 +1,46 @@
+var Gui = (function () {
+    function Gui() {
+        this.cdiv = [];
+        this.cont = [];
+    }
+    Gui.prototype.setup = function (p) {
+        this.p = p;
+        this.canv = p.createDiv();
+        this.canv.id('canv');
+        this.canv.hide();
+        this.canv.class('debug');
+        this.visi = false;
+        this.cdiv[0] = p.createDiv();
+        this.cdiv[0].class('cdiv');
+        this.cdiv[0].parent(this.canv);
+    };
+    Gui.prototype.tog = function (p) {
+        if (this.visi == false) {
+            this.visi = true;
+            this.canv.show();
+        }
+        else {
+            this.visi = false;
+            this.canv.hide();
+        }
+    };
+    Gui.prototype.addDiv = function (cls) {
+        var n = this.cdiv.push(this.p.createDiv());
+        this.cdiv[n - 1].class(cls);
+        this.cdiv[n - 1].parent(this.canv);
+        return n - 1;
+    };
+    Gui.prototype.addS = function (min, max, def, label) {
+        var n = this.cont.push(new sliderGui(this.p, min, max, def, label, this.cdiv[0]));
+        return n - 1;
+    };
+    Gui.prototype.val = function (n) {
+        return this.cont[n].val();
+    };
+    Gui.prototype.draw = function (p) {
+    };
+    return Gui;
+}());
 var Controller = (function () {
     function Controller(p, ui, pb) {
         this.p = p;
@@ -20,68 +63,16 @@ var Controller = (function () {
             this.pb.backward();
         if (kc === 39)
             this.pb.forward();
-        if (kc === 38)
-            this.pb.vu();
-        if (kc === 40)
-            this.pb.vd();
         if (kc === 190)
             this.pb.next();
         if (kc === 188)
             this.pb.prev();
+        if (kc === 90)
+            this.pb.tog();
     };
     Controller.prototype.cons = function () {
     };
     return Controller;
-}());
-var sliderGui = (function () {
-    function sliderGui(p, min, max, def, label, par) {
-        this.elm = p.createSlider(min, max, def, 0);
-        this.elm.parent(par);
-        this.label = p.createP(label);
-        this.label.parent(par);
-        this.label.class('lbl');
-    }
-    sliderGui.prototype.val = function () {
-        var n = this.elm.value();
-        return n;
-    };
-    return sliderGui;
-}());
-var Gui = (function () {
-    function Gui() {
-        this.cdiv = [];
-        this.cont = [];
-    }
-    Gui.prototype.setup = function (p) {
-        this.canv = p.createDiv();
-        this.canv.hide();
-        this.canv.class('debug');
-        this.visi = false;
-        this.cdiv[0] = p.createDiv();
-        this.cdiv[0].class('cdiv');
-        this.cdiv[0].parent(this.canv);
-        this.p = p;
-    };
-    Gui.prototype.tog = function (p) {
-        if (this.visi == false) {
-            this.visi = true;
-            this.canv.show();
-        }
-        else {
-            this.visi = false;
-            this.canv.hide();
-        }
-    };
-    Gui.prototype.addS = function (min, max, def, label) {
-        var n = this.cont.push(new sliderGui(this.p, min, max, def, label, this.cdiv[0]));
-        return n - 1;
-    };
-    Gui.prototype.val = function (n) {
-        return this.cont[n].val();
-    };
-    Gui.prototype.draw = function (p) {
-    };
-    return Gui;
 }());
 var phi = (1 + Math.sqrt(5)) / 2;
 var q = (2 * phi) + 1;
@@ -149,19 +140,32 @@ var Pentagram = (function () {
     return Pentagram;
 }());
 var Playback = (function () {
-    function Playback(p) {
+    function Playback(p, ui) {
         this.songs = [];
         this.urls = [];
         this.p = p;
-        this.urls[0] = '../assets/music/NM/Birth_of_the_New_Model.wav';
+        this.ui = ui;
+        this.urls[0] = '../assets/music/UNCANNY_VALLEY_BOUNES/Hard_Wired_Instrumental.wav';
+        this.urls[1] = '../assets/music/UNCANNY_VALLEY/Disco_Inferno.wav';
+        this.urls[2] = '../assets/music/CYGNUS/Cygnus.wav';
+        this.urls[3] = '../assets/music/DANGOURS_DAYS/Future_Club.wav';
+        this.visi = false;
     }
+    Playback.prototype.setup = function () {
+    };
     Playback.prototype.preload = function () {
         this.songs[0] = this.p.loadSound(this.urls[0]);
+        this.songs[1] = this.p.loadSound(this.urls[1]);
+        this.songs[2] = this.p.loadSound(this.urls[2]);
+        this.songs[3] = this.p.loadSound(this.urls[3]);
         this.playing = this.songs[0];
+        this.duration = this.playing.duration();
         this.pi = 0;
     };
     Playback.prototype.play = function () {
         this.playing.play();
+        if (!this.volume)
+            this.volume = new tweakable(this.ui, 0.0, 1.0, 1.0, 'Volumn');
     };
     Playback.prototype.pause = function () {
         if (this.playing.isPlaying())
@@ -191,24 +195,39 @@ var Playback = (function () {
             this.p.masterVolume(1);
     };
     Playback.prototype.next = function () {
-        this.playing.stop();
-        this.playing = this.songs[this.pi + 1];
-        this.pi++;
-        this.play();
+        this.changeSong(1);
     };
     Playback.prototype.prev = function () {
+        this.changeSong(-1);
+    };
+    Playback.prototype.changeSong = function (d) {
         this.playing.stop();
-        this.playing = this.songs[this.pi - 1];
-        this.pi--;
+        this.playing = this.songs[this.pi + d];
+        this.duration = this.playing.duration();
+        this.pi = this.pi + d;
         this.play();
     };
-    Playback.prototype.vu = function () {
-        var vol = this.p.getMasterVolume();
-        this.p.masterVolume(vol + 0.05);
+    Playback.prototype.mov = function () {
     };
-    Playback.prototype.vd = function () {
-        var vol = this.p.getMasterVolume();
-        this.p.masterVolume(vol - 0.05);
+    Playback.prototype.tog = function () {
+        if (this.visi)
+            this.visi = false;
+        else
+            this.visi = true;
+    };
+    Playback.prototype.drawGui = function () {
+        this.p.masterVolume(this.volume.v());
+        if (this.visi) {
+            var y = this.p.height - this.p.height / 10;
+            var xm = 100;
+            this.p.fill(50, 50, 50, 100);
+            this.p.rect(xm, y, this.p.width - xm * 2, 10);
+            this.p.fill(200, 20, 20);
+            console.log(this.duration);
+            var xc = this.p.map(this.playing.currentTime(), 0, this.playing.duration(), xm, this.p.width - xm * 2);
+            console.log(xc);
+            this.p.rect(xc, y - 5, 5, 20);
+        }
     };
     return Playback;
 }());
@@ -225,6 +244,20 @@ var tweakable = (function () {
         return this.uirf.val(this.i);
     };
     return tweakable;
+}());
+var sliderGui = (function () {
+    function sliderGui(p, min, max, def, label, par) {
+        this.elm = p.createSlider(min, max, def, 0);
+        this.elm.parent(par);
+        this.label = p.createP(label);
+        this.label.parent(par);
+        this.label.class('lbl');
+    }
+    sliderGui.prototype.val = function () {
+        var n = this.elm.value();
+        return n;
+    };
+    return sliderGui;
 }());
 var Vui = (function () {
     function Vui() {
@@ -254,7 +287,7 @@ var cn;
 var sketch = function (p) {
     ui = new Gui();
     vi = new Vui();
-    pb = new Playback(p);
+    pb = new Playback(p, ui);
     cn = new Controller(p, ui, pb);
     for (var i = 0; i < 10; ++i)
         pents[i] = new Pentagram();
@@ -283,6 +316,7 @@ var sketch = function (p) {
         p.resetMatrix();
         vi.draw(p);
         p.resetMatrix();
+        pb.drawGui();
     };
     p.keyPressed = function () {
         var kc = p.keyCode;

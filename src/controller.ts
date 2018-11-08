@@ -19,11 +19,9 @@ class Controller {
         if(kc === 80) this.pb.pause();
         if(kc === 37) this.pb.backward();
         if(kc === 39) this.pb.forward();
-        if(kc === 38) this.pb.vu();
-        if(kc === 40) this.pb.vd();
         if(kc === 190) this.pb.next();
         if(kc === 188) this.pb.prev();
-
+        if(kc === 90) this.pb.tog();
     }
 
     cons() {
