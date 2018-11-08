@@ -115,7 +115,7 @@ var Pentagram = (function () {
         this.ui = ui;
         this.portion = por;
         this.margin = mar;
-        this.sw = new tweakable(ui, 1, 10, 2, 'stroke width');
+        this.sw = new tweakable(ui, 1, 10, 5, 'stroke width');
         this.sr = new tweakable(ui, 0, 255, 255, 'R');
         this.sg = new tweakable(ui, 0, 255, 255, 'G');
         this.sb = new tweakable(ui, 0, 255, 255, 'B');
@@ -153,17 +153,10 @@ var Playback = (function () {
         this.songs = [];
         this.urls = [];
         this.p = p;
-        this.urls[0] = '../assets/music/nm/Birth_of_the_New_Model.wav';
-        this.urls[1] = '../assets/music/nm/Corrupted_by_Design.wav';
-        this.urls[2] = '../assets/music/nm/Tactical_Precision_Disarray.wav';
-        this.urls[4] = '../assets/music/nm/God_Complex.wav';
-        this.urls[5] = '../assets/music/nm/Vantablack.wav';
-        this.urls[6] = '../assets/music/nm/Tainted_Empire.wav';
+        this.urls[0] = '../assets/music/cofl.mp3';
     }
     Playback.prototype.preload = function () {
         this.songs[0] = this.p.loadSound(this.urls[0]);
-        this.songs[1] = this.p.loadSound(this.urls[1]);
-        this.songs[2] = this.p.loadSound(this.urls[2]);
         this.playing = this.songs[0];
         this.pi = 0;
     };
@@ -245,9 +238,9 @@ var Vui = (function () {
         this.avg = this.fft.logAverages(this.oct);
         for (var i = 0; i < this.avg.length; ++i) {
             var alpha;
-            p.strokeWeight(0.1);
+            p.noStroke();
             p.fill(this.avg[i] * (this.avg[i] * 0.1), this.avg[i] * 0.005, this.avg[i] * 0.0003, this.avg[i]);
-            p.rect(i * 2, p.height, 2, -this.avg[i] * 3);
+            p.rect(i * 1.5, p.height, 1.5, -p.height - this.avg[i] * 3);
         }
     };
     return Vui;

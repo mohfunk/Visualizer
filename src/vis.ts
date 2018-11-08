@@ -16,9 +16,9 @@ class Vui {
         this.avg = this.fft.logAverages(this.oct);
         for(let i: number = 0; i < this.avg.length; ++i) {
             var alpha: number;
-            p.strokeWeight(0.1);
+            p.noStroke();
             p.fill(this.avg[i]*(this.avg[i]*0.1), this.avg[i]*0.005, this.avg[i]*0.0003, this.avg[i]);
-            p.rect(i*2, p.height, 2, -this.avg[i]*3);
+            p.rect(i*1.5, p.height, 1.5, -p.height - this.avg[i]*3);
         }
     }
 }

@@ -16,8 +16,8 @@ class Pentagram {
     sb     : tweakable;
 
     dim() {
-        let wid = this.p.width;
-        let hei = this.p.height;
+        let wid: number = this.p.width;
+        let hei: number = this.p.height;
 
         this.l = wid/this.portion;
         this.length = this.l - (2 * this.margin);
@@ -44,7 +44,7 @@ class Pentagram {
         this.ui = ui;
         this.portion = por; 
         this.margin = mar;
-        this.sw = new tweakable(ui, 1, 10, 2, 'stroke width');
+        this.sw = new tweakable(ui, 1, 10, 5, 'stroke width');
         this.sr = new tweakable(ui, 0, 255, 255, 'R');
         this.sg = new tweakable(ui, 0, 255, 255, 'G');
         this.sb = new tweakable(ui, 0, 255, 255, 'B');

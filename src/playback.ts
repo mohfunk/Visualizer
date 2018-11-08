@@ -7,17 +7,10 @@ class Playback {
 
     constructor(p: p5) {
         this.p = p;
-        this.urls[0] = '../assets/music/nm/Birth_of_the_New_Model.wav';
-        this.urls[1] = '../assets/music/nm/Corrupted_by_Design.wav';
-        this.urls[2] = '../assets/music/nm/Tactical_Precision_Disarray.wav';
-        this.urls[4] = '../assets/music/nm/God_Complex.wav';
-        this.urls[5] = '../assets/music/nm/Vantablack.wav';
-        this.urls[6] = '../assets/music/nm/Tainted_Empire.wav';
+        this.urls[0] = '../assets/music/cofl.mp3';
     }
     preload() {
         this.songs[0] =  (this.p as any).loadSound(this.urls[0]);
-        this.songs[1] =  (this.p as any).loadSound(this.urls[1]);
-        this.songs[2] =  (this.p as any).loadSound(this.urls[2]);
         this.playing  = this.songs[0];
         this.pi = 0;
     }
