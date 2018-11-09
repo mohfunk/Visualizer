@@ -41,6 +41,26 @@ var Gui = (function () {
     };
     return Gui;
 }());
+var Point = (function () {
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    Point.prototype.ver = function (p) {
+        p.vertex(this.x, this.y);
+    };
+    Point.prototype.line = function (p, pnt) {
+        p.line(this.x, this.y, pnt.x, pnt.y);
+    };
+    Point.prototype.ofline = function (p, pnt, n) {
+        p.line(this.x + n, this.y + n, pnt.x + n, pnt.y + n);
+    };
+    Point.prototype.update = function (x, y) {
+        this.x = x;
+        this.y = y;
+    };
+    return Point;
+}());
 var Controller = (function () {
     function Controller(p, ui, pb) {
         this.p = p;
@@ -74,68 +94,55 @@ var Controller = (function () {
     };
     return Controller;
 }());
-var phi = (1 + Math.sqrt(5)) / 2;
-var q = (2 * phi) + 1;
-var sm = 2;
+var step = (2 * Math.PI) / 5;
 var bug = true;
+var burl = '../assets/music/';
+var nm = 'NEW_MODEL/';
 var Pentagram = (function () {
     function Pentagram() {
-        this.xPoints = [];
-        this.yPoints = [];
+        this.pnts = [];
     }
     Pentagram.prototype.dim = function () {
-        var wid = this.p.width;
-        var hei = this.p.height;
-        this.l = wid / this.portion;
-        this.length = this.l - (2 * this.margin);
-        this.b = this.length / q;
-        this.a = phi * this.b;
-        this.xPoints[0] = this.l + this.margin;
-        this.yPoints[0] = hei / (this.portion - 1);
-        this.xPoints[1] = (2 * this.l) - this.margin;
-        this.yPoints[1] = this.yPoints[0];
-        this.xPoints[2] = this.xPoints[0] + (this.length / 2);
-        this.yPoints[2] = this.yPoints[0] + this.a;
-        this.xPoints[3] = this.xPoints[2] + this.b;
-        this.yPoints[3] = this.yPoints[0] - this.a - this.b;
-        this.xPoints[4] = this.xPoints[2] - this.b;
-        this.yPoints[4] = this.yPoints[3];
+        this.r = this.rt.v();
+        var i = 0;
+        for (var th = 0; th < 2 * Math.PI; th += step, ++i) {
+            var xx = this.cx + (this.rt.v() * Math.cos(th - Math.PI / 2));
+            var yy = this.cy + (this.rt.v() * Math.sin(th + Math.PI / 2));
+            this.pnts[i].update(xx, yy);
+        }
     };
-    Pentagram.prototype.setup = function (p, ui, por, mar) {
+    Pentagram.prototype.setup = function (p, ui) {
         this.p = p;
         this.ui = ui;
-        this.portion = por;
-        this.margin = mar;
-        this.sw = new tweakable(ui, 1, 10, 5, 'stroke width');
+        this.cx = p.width / 2;
+        this.cy = p.height / 2;
+        this.r = 25;
+        this.sw = new tweakable(ui, 1, 10, 3, 'stroke width');
         this.sr = new tweakable(ui, 0, 255, 255, 'R');
         this.sg = new tweakable(ui, 0, 255, 255, 'G');
         this.sb = new tweakable(ui, 0, 255, 255, 'B');
+        this.rt = new tweakable(ui, 1, 1000, 25, 'Pentagram Radius');
+        for (var i = 0; i < 5; ++i)
+            this.pnts[i] = new Point(0, 0);
         this.dim();
     };
     Pentagram.prototype.shift = function (xFactor, yFactor) {
-        for (var i = 0; i < 5; ++i) {
-            this.xPoints[i] += xFactor;
-            this.yPoints[i] += yFactor;
-        }
     };
     Pentagram.prototype.scale = function (factor) {
-        this.xPoints[0] -= factor;
-        this.xPoints[1] += factor;
-        this.yPoints[2] += factor;
-        this.xPoints[3] += factor / phi;
-        this.yPoints[3] -= factor / phi;
-        this.xPoints[4] -= factor / phi;
-        this.yPoints[4] -= factor / phi;
     };
     Pentagram.prototype.draw = function (p) {
-        p.strokeWeight(this.sw.v());
+        this.dim();
+        p.push();
         p.stroke(this.sr.v(), this.sg.v(), this.sb.v());
-        p.endShape(p.CLOSE);
-        p.line(this.xPoints[0], this.yPoints[0], this.xPoints[1], this.yPoints[1]);
-        p.line(this.xPoints[1], this.yPoints[1], this.xPoints[4], this.yPoints[4]);
-        p.line(this.xPoints[4], this.yPoints[4], this.xPoints[2], this.yPoints[2]);
-        p.line(this.xPoints[2], this.yPoints[2], this.xPoints[3], this.yPoints[3]);
-        p.line(this.xPoints[3], this.yPoints[3], this.xPoints[0], this.yPoints[0]);
+        p.strokeWeight(this.sw.v());
+        p.strokeJoin(p.MITER);
+        p.fill(255, 0, 0);
+        this.pnts[0].line(p, this.pnts[2]);
+        this.pnts[2].line(p, this.pnts[4]);
+        this.pnts[4].line(p, this.pnts[1]);
+        this.pnts[1].line(p, this.pnts[3]);
+        this.pnts[3].line(p, this.pnts[0]);
+        p.pop();
     };
     return Pentagram;
 }());
@@ -145,10 +152,14 @@ var Playback = (function () {
         this.urls = [];
         this.p = p;
         this.ui = ui;
-        this.urls[0] = '../assets/music/UNCANNY_VALLEY_BOUNES/Hard_Wired_Instrumental.wav';
-        this.urls[1] = '../assets/music/UNCANNY_VALLEY/Disco_Inferno.wav';
-        this.urls[2] = '../assets/music/CYGNUS/Cygnus.wav';
-        this.urls[3] = '../assets/music/DANGOURS_DAYS/Future_Club.wav';
+        for (var i = 0; i < 6; ++i)
+            this.urls[i] = burl + nm;
+        this.urls[0] += 'Birth_of_the_New_Model.wav';
+        this.urls[1] += 'Tactical_Precision_Disarray.wav';
+        this.urls[2] += 'Vantablack.wav';
+        this.urls[3] += 'Tainted_Empire.wav';
+        this.urls[4] += 'God_Complex.wav';
+        this.urls[5] += 'Corrupted_by_Design.wav';
         this.visi = false;
     }
     Playback.prototype.setup = function () {
@@ -158,6 +169,8 @@ var Playback = (function () {
         this.songs[1] = this.p.loadSound(this.urls[1]);
         this.songs[2] = this.p.loadSound(this.urls[2]);
         this.songs[3] = this.p.loadSound(this.urls[3]);
+        this.songs[4] = this.p.loadSound(this.urls[4]);
+        this.songs[5] = this.p.loadSound(this.urls[5]);
         this.playing = this.songs[0];
         this.duration = this.playing.duration();
         this.pi = 0;
@@ -248,6 +261,7 @@ var tweakable = (function () {
 var sliderGui = (function () {
     function sliderGui(p, min, max, def, label, par) {
         this.elm = p.createSlider(min, max, def, 0);
+        this.elm.style('width', '500px');
         this.elm.parent(par);
         this.label = p.createP(label);
         this.label.parent(par);
@@ -298,9 +312,9 @@ var sketch = function (p) {
         p.createCanvas(p.windowWidth, p.windowHeight);
         ui.setup(p);
         vi.setup(p);
-        pents[0].setup(p, ui, 3, 100);
+        pents[0].setup(p, ui);
         pb.play();
-        p.frameRate(144);
+        p.frameRate(24);
     };
     p.windowResized = function () {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
@@ -312,6 +326,7 @@ var sketch = function (p) {
         var frame = 180;
         var time = p.frameCount / frame;
         p.background(0);
+        p.resetMatrix();
         pents[0].draw(p);
         p.resetMatrix();
         vi.draw(p);

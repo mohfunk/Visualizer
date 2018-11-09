@@ -1,0 +1,124 @@
+{
+    "base": "../assets/music/",
+    "albums": 
+    [
+        {
+            "id": "0",
+            "name": "SEXUALIZER",
+            "songs": 
+            [
+            ]
+        },
+        {
+            "id": "1",
+            "name": "NIGHT_DRIVING_AVENGER",
+            "songs": 
+            [
+                { "id": "0", "name": "Birth_of_a_New_Model"},
+                { "id": "1", "name": "Tactical_Precision_Disarray"},
+                { "id": "2", "name": "Vantablack"},
+                { "id": "3", "name": "Tainted_Empire"},
+                { "id": "4", "name": "Corrupted_by_Design"},
+                { "id": "5", "name": "God_Complex"}
+            ]
+        },
+        {
+            "id": "2",
+            "name": "TERROR_404",
+            "songs": 
+            [
+                { "id": "0", "name": "Birth_of_a_New_Model"},
+                { "id": "1", "name": "Tactical_Precision_Disarray"},
+                { "id": "2", "name": "Vantablack"},
+                { "id": "3", "name": "Tainted_Empire"},
+                { "id": "4", "name": "Corrupted_by_Design"},
+                { "id": "5", "name": "God_Complex"}
+            ]
+        },
+        {
+            "id": "3",
+            "name": "NOCTURNE_CITY",
+            "songs": 
+            [
+                { "id": "0", "name": "Birth_of_a_New_Model"},
+                { "id": "1", "name": "Tactical_Precision_Disarray"},
+                { "id": "2", "name": "Vantablack"},
+                { "id": "3", "name": "Tainted_Empire"},
+                { "id": "4", "name": "Corrupted_by_Design"},
+                { "id": "5", "name": "God_Complex"}
+            ]
+        },
+        {
+            "id": "4",
+            "name": "I_AM_THE_NIGHT",
+            "songs": 
+            [
+                { "id": "0", "name": "Birth_of_a_New_Model"},
+                { "id": "1", "name": "Tactical_Precision_Disarray"},
+                { "id": "2", "name": "Vantablack"},
+                { "id": "3", "name": "Tainted_Empire"},
+                { "id": "4", "name": "Corrupted_by_Design"},
+                { "id": "5", "name": "God_Complex"}
+            ]
+        },
+        {
+        
+            "id": "5",
+            "name": "DANGEROUS_DAYS",
+            "songs": 
+            [
+                { "id": "0", "name": "Birth_of_a_New_Model"},
+                { "id": "1", "name": "Tactical_Precision_Disarray"},
+                { "id": "2", "name": "Vantablack"},
+                { "id": "3", "name": "Tainted_Empire"},
+                { "id": "4", "name": "Corrupted_by_Design"},
+                { "id": "5", "name": "God_Complex"}
+            ]
+        },
+        {
+        
+            "id": "6",
+            "name": "THE_UNCANNY_VALLEY",
+            "songs": 
+            [
+                { "id": "0", "name": "Birth_of_a_New_Model"},
+                { "id": "1", "name": "Tactical_Precision_Disarray"},
+                { "id": "2", "name": "Vantablack"},
+                { "id": "3", "name": "Tainted_Empire"},
+                { "id": "4", "name": "Corrupted_by_Design"},
+                { "id": "5", "name": "God_Complex"}
+            ]
+        },
+        {
+        
+            "id": "7",
+            "name": "THE_UNCANNY_VALLEY_BONUS",
+            "songs": 
+            [
+                { "id": "0", "name": "Birth_of_a_New_Model"},
+                { "id": "1", "name": "Tactical_Precision_Disarray"},
+                { "id": "2", "name": "Vantablack"},
+                { "id": "3", "name": "Tainted_Empire"},
+                { "id": "4", "name": "Corrupted_by_Design"},
+                { "id": "5", "name": "God_Complex"}
+            ]
+        },
+        {
+            "id": "8",
+            "name": "NEW_MODEL",
+            "songs": 
+            [
+                { "id": "0", "name": "Birth_of_a_New_Model"},
+                { "id": "1", "name": "Tactical_Precision_Disarray"},
+                { "id": "2", "name": "Vantablack"},
+                { "id": "3", "name": "Tainted_Empire"},
+                { "id": "4", "name": "Corrupted_by_Design"},
+                { "id": "5", "name": "God_Complex"}
+            ]
+        }
+    ],
+    "Singles": 
+    [
+        { "id": "0", "name": "CYGNUS" }
+    ]
+}

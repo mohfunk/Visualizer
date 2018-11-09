@@ -19,9 +19,9 @@ var sketch = (p: p5) => {
         p.createCanvas(p.windowWidth, p.windowHeight);
         ui.setup(p);
         vi.setup(p);
-        pents[0].setup(p, ui, 3, 100);
+        pents[0].setup(p, ui);
         pb.play();
-        p.frameRate(144);
+        p.frameRate(24);
     }
 
     p.windowResized = () => {
@@ -35,6 +35,7 @@ var sketch = (p: p5) => {
         let frame: number = 180;
         let time: number = p.frameCount/frame;
         p.background(0);
+        p.resetMatrix();
         pents[0].draw(p);
         p.resetMatrix();
         vi.draw(p);

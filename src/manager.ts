@@ -1,7 +1,7 @@
 // Constants
-const phi: number = (1 + Math.sqrt(5))/2;
-const q  : number = (2*phi) + 1;
-const sm : number = 2;
+const step: number = (2*Math.PI)/5;
 // Debug
 
 let bug: boolean = true;
+let burl = '../assets/music/';
+let nm = 'NEW_MODEL/';

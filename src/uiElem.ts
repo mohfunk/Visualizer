@@ -9,6 +9,7 @@ class sliderGui implements baseGui {
     label : p5.Element;
     constructor(p: p5, min: number, max: number, def: number, label: string, par: p5.Element) {
         this.elm = p.createSlider(min, max, def, 0) as p5.Element;
+        this.elm.style('width', '500px');
         this.elm.parent(par);
         this.label = p.createP(label) as p5.Element;
         this.label.parent(par);

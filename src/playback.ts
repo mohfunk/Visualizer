@@ -14,10 +14,13 @@ class Playback {
     constructor(p: p5, ui: Gui) {
         this.p = p;
         this.ui = ui;
-        this.urls[0] = '../assets/music/UNCANNY_VALLEY_BOUNES/Hard_Wired_Instrumental.wav';
-        this.urls[1] = '../assets/music/UNCANNY_VALLEY/Disco_Inferno.wav';
-        this.urls[2] = '../assets/music/CYGNUS/Cygnus.wav';
-        this.urls[3] = '../assets/music/DANGOURS_DAYS/Future_Club.wav';
+        for(var i = 0; i < 6; ++i) this.urls[i] = burl + nm;
+        this.urls[0] += 'Birth_of_the_New_Model.wav';
+        this.urls[1] += 'Tactical_Precision_Disarray.wav';
+        this.urls[2] += 'Vantablack.wav';
+        this.urls[3] += 'Tainted_Empire.wav';
+        this.urls[4] += 'God_Complex.wav';
+        this.urls[5] += 'Corrupted_by_Design.wav';
         this.visi = false;
     }
     setup() {
@@ -28,6 +31,8 @@ class Playback {
         this.songs[1] =  (this.p as any).loadSound(this.urls[1]);
         this.songs[2] =  (this.p as any).loadSound(this.urls[2]);
         this.songs[3] =  (this.p as any).loadSound(this.urls[3]);
+        this.songs[4] =  (this.p as any).loadSound(this.urls[4]);
+        this.songs[5] =  (this.p as any).loadSound(this.urls[5]);
         this.playing  = this.songs[0];
         this.duration = this.playing.duration();
         this.pi = 0;
