@@ -34,7 +34,10 @@ class Gui {
         let n: number = this.cont.push( new sliderGui(this.p, min, max, def, label, this.cdiv[0]));
         return n-1;
     }
-
+    
+    addelm(elm: p5.Element) {
+        elm.parent(this.canv);
+    }
     val(n: number) {
         return this.cont[n].val();
     }

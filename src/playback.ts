@@ -10,6 +10,8 @@ class Playback {
     ui      : Gui;
     volume  : tweakable;
     timeLine: p5.Element;
+    btncon: p5.Element;
+    btns    : p5.Element[] = [];
 
     constructor(p: p5, ui: Gui) {
         this.p = p;
@@ -22,9 +24,30 @@ class Playback {
         this.urls[4] += 'God_Complex.wav';
         this.urls[5] += 'Corrupted_by_Design.wav';
         this.visi = false;
+
     }
     setup() {
-    
+        this.btncon = this.p.createDiv() as p5.Element;
+        this.btncon.class('pb');
+        for(var i = 0; i < 6; ++i) {
+            this.btns[i] = this.p.createElement('i') as p5.Element;
+            this.btns[i].parent(this.btncon);
+
+        }
+        this.btns[0].class('fas fa-caret-left');
+        this.btns[0].mousePressed( () => this.prev());
+        this.btns[1].class('fas fa-backward');
+        this.btns[1].mousePressed( () => this.backward());
+        this.btns[2].class('fas fa-pause');
+        this.btns[2].mousePressed( () => this.pause());
+        this.btns[3].class('fas fa-forward');
+        this.btns[3].mousePressed( () => this.forward());
+        this.btns[4].class('fas fa-caret-right');
+        this.btns[4].mousePressed( () => this.next());
+
+    }
+    btnclick() {
+        console.log('click');
     }
     preload() {
         this.songs[0] =  (this.p as any).loadSound(this.urls[0]);
@@ -37,14 +60,23 @@ class Playback {
         this.duration = this.playing.duration();
         this.pi = 0;
     }
-    play() {
+    play(index?: number) {
+        if(this.playing.isPlaying()) this.playing.stop();
+        if(index != undefined) this.pi = index;
         this.playing.play();
         if(!this.volume) this.volume = new tweakable(this.ui, 0.0, 1.0, 1.0, 'Volumn');
     }
     pause() {
-        if(this.playing.isPlaying())
+        if(this.playing.isPlaying()) {
             this.playing.pause();
-        else this.playing.play();
+            this.btns[2].removeClass('fa-pause');
+            this.btns[2].addClass('fa-play');
+        }
+        else { 
+            this.playing.play();
+            this.btns[2].removeClass('fa-play');
+            this.btns[2].addClass('fa-pause');
+        }
     }
     replay() {
         this.playing.stop();
@@ -67,10 +99,16 @@ class Playback {
         if( vol != 1 ) this.p.masterVolume(1); 
     }
     next() {
-        this.changeSong(1);
+        if(this.pi < smax)
+            this.changeSong(1);
+        else
+            this.play(0);
     }
     prev() {
-        this.changeSong(-1);
+        if(this.pi > 0)
+            this.changeSong(-1);
+        else
+            this.play(5)
     }
     changeSong(d: number) {
         this.playing.stop();
@@ -80,7 +118,7 @@ class Playback {
         this.play();
     }
     mov() {
-        
+
     } 
     tog() {
         if(this.visi) this.visi = false;
@@ -89,15 +127,15 @@ class Playback {
     drawGui() {
         this.p.masterVolume(this.volume.v());
         if(this.visi) {
-        let y: number = this.p.height - this.p.height/10;
-        let xm: number = 100;
-        this.p.fill(50, 50, 50, 100);
-        this.p.rect(xm, y, this.p.width - xm*2, 10);
-        this.p.fill(200, 20, 20);
-        console.log(this.duration);
-        let xc: number = this.p.map(this.playing.currentTime(), 0, this.playing.duration(), xm, this.p.width - xm*2);
-        console.log(xc);
-        this.p.rect(xc, y-5, 5, 20);
+            let y: number = this.p.height - this.p.height/10;
+            let xm: number = 100;
+            this.p.fill(50, 50, 50, 100);
+            this.p.rect(xm, y, this.p.width - xm*2, 10);
+            this.p.fill(200, 20, 20);
+            console.log(this.duration);
+            let xc: number = this.p.map(this.playing.currentTime(), 0, this.playing.duration(), xm, this.p.width - xm*2);
+            console.log(xc);
+            this.p.rect(xc, y-5, 5, 20);
         }
     }
 

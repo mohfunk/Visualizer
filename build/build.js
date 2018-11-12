@@ -34,6 +34,9 @@ var Gui = (function () {
         var n = this.cont.push(new sliderGui(this.p, min, max, def, label, this.cdiv[0]));
         return n - 1;
     };
+    Gui.prototype.addelm = function (elm) {
+        elm.parent(this.canv);
+    };
     Gui.prototype.val = function (n) {
         return this.cont[n].val();
     };
@@ -95,6 +98,7 @@ var Controller = (function () {
     return Controller;
 }());
 var step = (2 * Math.PI) / 5;
+var smax = 5;
 var bug = true;
 var burl = '../assets/music/';
 var nm = 'NEW_MODEL/';
@@ -103,27 +107,25 @@ var Pentagram = (function () {
         this.pnts = [];
     }
     Pentagram.prototype.dim = function () {
-        this.r = this.rt.v();
         var i = 0;
         for (var th = 0; th < 2 * Math.PI; th += step, ++i) {
-            var xx = this.cx + (this.rt.v() * Math.cos(th - Math.PI / 2));
-            var yy = this.cy + (this.rt.v() * Math.sin(th + Math.PI / 2));
+            var xx = this.cx + (this.r * Math.cos(th - Math.PI / 2));
+            var yy = this.cy + (this.r * Math.sin(th + Math.PI / 2));
             this.pnts[i].update(xx, yy);
         }
     };
     Pentagram.prototype.setup = function (p, ui) {
         this.p = p;
         this.ui = ui;
-        this.cx = p.width / 2;
-        this.cy = p.height / 2;
-        this.r = 25;
+        this.r = 60;
         this.sw = new tweakable(ui, 1, 10, 3, 'stroke width');
         this.sr = new tweakable(ui, 0, 255, 255, 'R');
         this.sg = new tweakable(ui, 0, 255, 255, 'G');
         this.sb = new tweakable(ui, 0, 255, 255, 'B');
-        this.rt = new tweakable(ui, 1, 1000, 25, 'Pentagram Radius');
         for (var i = 0; i < 5; ++i)
             this.pnts[i] = new Point(0, 0);
+        this.cx = (p.width / 2) - this.r / 2;
+        this.cy = p.height / 2 - this.r / 2;
         this.dim();
     };
     Pentagram.prototype.shift = function (xFactor, yFactor) {
@@ -150,6 +152,7 @@ var Playback = (function () {
     function Playback(p, ui) {
         this.songs = [];
         this.urls = [];
+        this.btns = [];
         this.p = p;
         this.ui = ui;
         for (var i = 0; i < 6; ++i)
@@ -163,6 +166,26 @@ var Playback = (function () {
         this.visi = false;
     }
     Playback.prototype.setup = function () {
+        var _this = this;
+        this.btncon = this.p.createDiv();
+        this.btncon.class('pb');
+        for (var i = 0; i < 6; ++i) {
+            this.btns[i] = this.p.createElement('i');
+            this.btns[i].parent(this.btncon);
+        }
+        this.btns[0].class('fas fa-caret-left');
+        this.btns[0].mousePressed(function () { return _this.prev(); });
+        this.btns[1].class('fas fa-backward');
+        this.btns[1].mousePressed(function () { return _this.backward(); });
+        this.btns[2].class('fas fa-pause');
+        this.btns[2].mousePressed(function () { return _this.pause(); });
+        this.btns[3].class('fas fa-forward');
+        this.btns[3].mousePressed(function () { return _this.forward(); });
+        this.btns[4].class('fas fa-caret-right');
+        this.btns[4].mousePressed(function () { return _this.next(); });
+    };
+    Playback.prototype.btnclick = function () {
+        console.log('click');
     };
     Playback.prototype.preload = function () {
         this.songs[0] = this.p.loadSound(this.urls[0]);
@@ -175,16 +198,26 @@ var Playback = (function () {
         this.duration = this.playing.duration();
         this.pi = 0;
     };
-    Playback.prototype.play = function () {
+    Playback.prototype.play = function (index) {
+        if (this.playing.isPlaying())
+            this.playing.stop();
+        if (index != undefined)
+            this.pi = index;
         this.playing.play();
         if (!this.volume)
             this.volume = new tweakable(this.ui, 0.0, 1.0, 1.0, 'Volumn');
     };
     Playback.prototype.pause = function () {
-        if (this.playing.isPlaying())
+        if (this.playing.isPlaying()) {
             this.playing.pause();
-        else
+            this.btns[2].removeClass('fa-pause');
+            this.btns[2].addClass('fa-play');
+        }
+        else {
             this.playing.play();
+            this.btns[2].removeClass('fa-play');
+            this.btns[2].addClass('fa-pause');
+        }
     };
     Playback.prototype.replay = function () {
         this.playing.stop();
@@ -208,10 +241,16 @@ var Playback = (function () {
             this.p.masterVolume(1);
     };
     Playback.prototype.next = function () {
-        this.changeSong(1);
+        if (this.pi < smax)
+            this.changeSong(1);
+        else
+            this.play(0);
     };
     Playback.prototype.prev = function () {
-        this.changeSong(-1);
+        if (this.pi > 0)
+            this.changeSong(-1);
+        else
+            this.play(5);
     };
     Playback.prototype.changeSong = function (d) {
         this.playing.stop();
@@ -313,6 +352,7 @@ var sketch = function (p) {
         ui.setup(p);
         vi.setup(p);
         pents[0].setup(p, ui);
+        pb.setup();
         pb.play();
         p.frameRate(24);
     };

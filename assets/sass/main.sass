@@ -1,5 +1,9 @@
+
+@import './mi.sass'
 @import './fonts.sass'
 @import './colors.sass'
+@import './ani.sass'
+
 html
   background: #000000
   overflow: hidden
@@ -28,3 +32,23 @@ Button.uiBtn
   .lbl
     font-family: $fut
     color: #fff
+i
+
+  padding-left: 1em
+  padding-right: 1em
+  display: block
+  color: $w1
+  +animation(bout 1500ms linear both)
+  &:hover 
+    +animation(bin 1500ms linear both) 
+    cursor: pointer
+    
+.pb
+  display: flex 
+  align-items: center
+  justify-content: center
+  position: fixed
+  top: 90%
+  left: 50%
+  transform: translateX(-50%)
+

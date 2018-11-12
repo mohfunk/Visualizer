@@ -20,6 +20,7 @@ var sketch = (p: p5) => {
         ui.setup(p);
         vi.setup(p);
         pents[0].setup(p, ui);
+        pb.setup();
         pb.play();
         p.frameRate(24);
     }
