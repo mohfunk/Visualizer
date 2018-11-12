@@ -1,3 +1,0 @@
-# Vis
-
-Visualizable variables
