@@ -20,9 +20,10 @@ export default class Vui {
         this.avg = this.fft.logAverages(this.oct);
         for(let i: number = 0; i < this.avg.length; ++i) {
             var alpha: number;
+            var scal: number = i*i/10000
             p.noStroke();
-            p.fill(this.avg[i]*(this.avg[i]*0.1), this.avg[i]*0.005, this.avg[i]*0.0003, this.avg[i]);
-            p.rect(i*1.5, p.height, 1.5, -p.height - this.avg[i]*3);
+            p.fill(this.avg[i]*(this.avg[i]*scal), this.avg[i]*0.005, this.avg[i]*0.0003, this.avg[i]+scal);
+            p.rect(i*3, p.height, 1, -p.height - this.avg[i]*3);
         }
     }
 }
