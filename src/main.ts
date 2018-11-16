@@ -1,13 +1,23 @@
-import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import 'p5/lib/addons/p5.sound.min.js';
-import 'p5/lib/addons/p5.dom.min.js';
-Vue.config.productionTip = false;
+import 'p5'
+require('p5/lib/addons/p5.sound')
+import Greeter from './Greeter';
+var sketch = (p: p5) => {
 
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount('#app');
+    p.preload = () => {
+    }
+    p.setup = () => {
+        p.createCanvas(p.windowWidth, p.windowHeight);
+    }
+    p.draw = () => {
+    }
+    p.windowResized = () => {
+        p.resizeCanvas(p.windowWidth, p.windowHeight);
+    }
+    p.keyPressed = () => {
+    }
+
+}
+var sketchP = new p5(sketch);
+
+const greeter = new Greeter("Hello, world!");
+document.body.innerHTML = greeter.greet();
