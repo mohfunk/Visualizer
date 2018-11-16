@@ -27,11 +27,11 @@ export default class Playback {
     constructor(p: p5, ui: Gui) {
         this.p = p;
         this.ui = ui;
-        for(var i = 0; i < 4; ++i) this.urls[i] = burl;
-        this.urls[0] += uv + 'disco-inferno.wav';
-        this.urls[1] += nm + 'Tactical_Precision_Disarray.wav';
-        this.urls[2] += dd + 'future-club.wav';
-        this.urls[3] += am + 'eclipse.wav';
+        for(var i = 0; i < 1; ++i) this.urls[i] = burl;
+        //this.urls[0] += uv + 'disco-inferno.wav';
+        //this.urls[1] += nm + 'Tactical_Precision_Disarray.wav';
+        //this.urls[2] += dd + 'future-club.wav';
+        this.urls[0] += am + 'eclipse.wav';
         this.visi = false;
 
     }
@@ -60,12 +60,12 @@ export default class Playback {
     }
     preload() {
         this.songs[0] =  (this.p as any).loadSound(this.urls[0]);
-        this.songs[1] =  (this.p as any).loadSound(this.urls[1]);
-        this.songs[2] =  (this.p as any).loadSound(this.urls[2]);
-        this.songs[3] =  (this.p as any).loadSound(this.urls[3]);
+        //this.songs[1] =  (this.p as any).loadSound(this.urls[1]);
+        //this.songs[2] =  (this.p as any).loadSound(this.urls[2]);
+        //this.songs[3] =  (this.p as any).loadSound(this.urls[3]);
         this.playing  = this.songs[0];
         this.duration = this.playing.duration();
-        this.pi = 3;
+        this.pi = 0;
     }
     play(index?: number) {
         if(this.playing.isPlaying()) this.playing.stop();

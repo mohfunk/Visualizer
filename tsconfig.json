@@ -13,8 +13,7 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "p5",
-      "p5/lib/addons/"
+      "p5"
     ],
     "paths": {
       "@/*": [
