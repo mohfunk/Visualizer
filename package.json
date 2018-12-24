@@ -1,19 +1,15 @@
 {
   "name": "vis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Mohammed Alhaythm",
   "license": "MIT",
-  "version": "0.0.1",
-  "dependencies": {
-    "p5": "^0.6.1"
+  "scripts": {
+    "serve": "concurrently \"browser-sync start --server -w\" \" tsc --watch\" \"sass --watch assets/sass/main.sass:build/main.css\""
   },
   "devDependencies": {
-    "@types/node": "^10.3.3",
-    "fuse-box": "^3.2.2",
-    "typescript": "^2.9.2",
-    "uglify-js": "^3.4.0"
-  },
-  "scripts": {
-    "compile": "tsc",
-    "sketch": "node fuse.js",
-    "dist-os": "node fuse.js dist-open-processing"
+    "browser-sync": "^2.26.3",
+    "concurrently": "^4.0.1",
+    "typescript": "^3.1.6"
   }
 }
